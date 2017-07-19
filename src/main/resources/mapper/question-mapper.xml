@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kanper.mapper.QuestionMapper">
+    <resultMap id="questionMap" type="question">
+        <id column="id" property="id"></id>
+        <result column="ques" property="question"></result>
+        <result column="ans_a" property="ansA"></result>
+        <result column="ans_b" property="ansB"></result>
+        <result column="ans_c" property="ansC"></result>
+        <result column="ans_d" property="ansD"></result>
+        <result column="right_ans" property="rightAns"></result>
+    </resultMap>
+
+
+    <select id="getRandom" resultMap="questionMap">
+        SELECT * FROM question ORDER BY RAND() LIMIT 10
+    </select>
+
+</mapper>

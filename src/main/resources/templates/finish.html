@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>温江科普答题|首页</title>
+    <link rel="stylesheet" th:href="@{/css/swiper.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script th:src="@{js/swiper.min.js}"></script>
+    <script th:src="@{js/swiper.animate.min.js}"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<!-- 微信分享的图片 -->
+<div style="height:1px;overflow:hidden;">
+    <img src="upload/logo.png" />
+</div>
+<div class="yindao" style="display:none">
+    <img src="upload/mengban.png" />
+</div>
+<div class="swiper-container" style="-webkit-user-select:none;-webkit-touch-callout:none;">
+    <div class="swiper-wrapper">
+
+        <section class="swiper-slide swiper-slide2" >
+
+            <img src="upload/result.png" class="ani" style="width:123px;height:25.2px;left:50%;margin-left:-61.5px;top:35px;z-index:5; " swiper-animate-effect="bounce" swiper-animate-duration="0.5s" swiper-animate-delay="0s"  >
+
+            <img class="ani first" style="height:28px;width:204px;top:80px;z-index:5;left:50%;margin-left:-102px" swiper-animate-effect="bounceInLeft" swiper-animate-duration="1.5s" swiper-animate-delay="0.5s">
+            <!--  <div class="ani resize first" style="height:28px;top:70px;z-index:5;left:60px;" swiper-animate-effect="bounceInLeft" swiper-animate-duration="1.5s" swiper-animate-delay="0.5s" >
+               <img class="first" style="height:28px;/>
+             </div> -->
+
+            <div  class="ani resize second" style="width:250px;height:31.5px;left:30px;top:120px;z-index:5; line-height:200%" swiper-animate-effect="bounceInLeft" swiper-animate-duration="0.5s" swiper-animate-delay="2s"  ></div>
+
+            <div  class="ani resize" style="width:250px;height:31.5px;left:30px;top:280px;z-index:5;color:#5e4629; font-size:80%" swiper-animate-effect="bounceInUp" swiper-animate-duration="1.5s" swiper-animate-delay="2.5s"  >上好约APP，约见更多和你志趣相投的人，散发你独特的魅力，感染更多的人。
+            </div>
+
+            <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.pcjh.haoyue">
+                <img src="upload/xiazai.png"  class="ani resize" style="width:125px;height:34px;left:90px;top:330px;z-index:1;" swiper-animate-effect="bounceInUp" swiper-animate-duration="1.5s" swiper-animate-delay="4s"  ></a>
+
+            <a id="fenxiang">
+                <img src="upload/fenxiang.png"  class="ani resize" style="width:125px;height:34px;left:90px;top:380px;z-index:1;" swiper-animate-effect="bounceInUp" swiper-animate-duration="1.5s" swiper-animate-delay="5.5s"  ></a>
+
+
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<script>
+    // EventUtil.addHandler('window','load',function(
+    scaleW=window.innerWidth/320;
+    scaleH=window.innerHeight/480;
+    var resizes = document.querySelectorAll('.resize');
+    for (var j=0; j<resizes.length; j++) {
+        resizes[j].style.width=parseInt(resizes[j].style.width)*scaleW+'px';
+        resizes[j].style.height=parseInt(resizes[j].style.height)*scaleH+'px';
+        resizes[j].style.top=parseInt(resizes[j].style.top)*scaleH+'px';
+        resizes[j].style.left=parseInt(resizes[j].style.left)*scaleW+'px';
+    }
+
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction : 'vertical',
+        pagination: '.swiper-pagination',
+        //virtualTranslate : true,
+        mousewheelControl : true,
+        onInit: function(swiper){
+            swiperAnimateCache(swiper);
+            swiperAnimate(swiper);
+        },
+        onSlideChangeEnd: function(swiper){
+            swiperAnimate(swiper);
+        },
+        onTransitionEnd: function(swiper){
+            swiperAnimate(swiper);
+        },
+
+
+        watchSlidesProgress: true,
+
+        onProgress: function(swiper){
+            for (var i = 0; i < swiper.slides.length; i++){
+                var slide = swiper.slides[i];
+                var progress = slide.progress;
+                var translate = progress*swiper.height/4;
+                scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
+                var opacity = 1 - Math.min(Math.abs(progress/2),0.5);
+                slide.style.opacity = opacity;
+                es = slide.style;
+                es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,'+translate+'px,-'+translate+'px) scaleY(' + scale + ')';
+
+            }
+        },
+
+        onSetTransition: function(swiper, speed) {
+            for (var i = 0; i < swiper.slides.length; i++){
+                es = swiper.slides[i].style;
+                es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
+
+            }
+        },
+
+
+
+    })
+</script>
+<script language="javascript" type="text/javascript">
+    var str = location.search.substr(-2);
+    if( str > 40){
+        $(".first").attr("src","upload/zhishu5.png");
+        $(".second").empty().append("你乐观开朗，宽容随和，懂得尊重别人。而且你的交友原则是互利互助、彼此独立，朋友们与你在一起既愉快又轻松，大家都很喜欢你。");
+        $(document).attr("title","我是名副其实的社交达人(测试结果)。快来测测你的社交魅力吧。");
+    }else if(str >30 && str <41){
+        $(".first").attr("src","upload/zhishu4.png");
+        $(".second").empty().append("也许你不是那么外向，朋友与你相识初期，难以很快达到融洽地步。但随着时间的推移，你的品质和为人会赢得大家的信任，你不妨更多地敞开自己。");
+        $(document).attr("title","我是潜力无限的趴体王(测试结果)。快来测测你的社交魅力吧。");
+    }else if(str >20 && str < 31){
+        $(".first").attr("src","upload/zhishu3.png");
+        $(".second").empty().append("你缺乏足够的独立性，遇事难有主见，因此难以使人产生可靠的感觉。请试着多肯定自己的想法，同时多表达自己的意见。");
+        $(document).attr("title","我是家里蹲的纯宅族(测试结果)。快来测测你的社交魅力吧。");
+    }else{
+        $(".first").attr("src","upload/zhishu2.png");
+        $(".second").empty().append("很多时候，与人交往无法使你愉快，反而成为一种令你厌烦的负担。其实你并非不需要朋友，只是你一度误交损友，让你存在“哪里需要朋友”的错觉而已。");
+        $(document).attr("title","我是空虚寂寞的尼特族(测试结果)。快来测测你的社交魅力吧.");
+    }
+    $("#fenxiang").click(function(){
+        $(".yindao").show();
+    });
+    $(".yindao").click(function(){
+        $(".yindao").hide();
+    });
+
+</script>
+</body>
+</html>

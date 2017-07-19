@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>温江科普答题|首页</title>
+    <link rel="stylesheet" th:href="@{/css/swiper.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script th:src="@{js/swiper.min.js}"></script>
+    <script th:src="@{js/swiper.animate.min.js}"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="swiper-container" style="-webkit-user-select:none;-webkit-touch-callout:none;">
+    <div class="swiper-wrapper">
+
+        <section class="swiper-slide swiper-slide2 -webkit-user-select:none;
+                -webkit-touch-callout:none;">
+            <img src="upload/title.png" class="ani resize"
+                 style="width:125px;height:31.5px;left:90px;top:35px;z-index:5; " swiper-animate-effect="bounce"
+                 swiper-animate-duration="0.5s" swiper-animate-delay="0s">
+
+            <div class="ani resize" style="left:130px;top:80px;z-index:5;">
+                <div style="width:60px;height:60px;line-height:60px;z-index:5;background-color:#ffaf00;border-radius:50%;text-align:center">
+                    1/10
+                </div>
+            </div>
+
+            <div class="ani resize title" style="left:40px;top:160px;z-index:3;">刘备的军师是：
+            </div>
+
+            <p class="ani resize choose" data-value="5"
+               style="left:40px;top:220px;line-height:26px;width:300px;z-index:3;">
+                <img style="width:26px;z-index:3;display:inline-block;float:left;" src="upload/nochecked.png">
+                <span style="z-index:3;display:block;">诸葛亮</span>
+            </p>
+
+            <p class="ani resize choose" data-value="3"
+               style="left:40px;top:260px;line-height:26px;width:300px;z-index:3;">
+                <img style="width:26px;z-index:3;display:inline-block;float:left;" src="upload/nochecked.png">
+                <span style="display:block;">荀彧</span>
+            </p>
+
+
+            <p class="ani resize choose" data-value="1"
+               style="left:40px;top:300px;width:300px;line-height:26px;z-index:3;">
+                <img style="width:26px;z-index:3;display:inline-block;float:left;" src="upload/nochecked.png">
+                <span style="display:block;">郭嘉</span>
+            </p>
+            <p class="ani resize choose" data-value="2"
+               style="left:40px;top:340px;width:300px;line-height:26px;z-index:3;">
+                <img style="width:26px;z-index:3;display:inline-block;float:left;" src="upload/nochecked.png">
+                <span style="display:block;">庞统</span>
+            </p>
+
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    scaleW = window.innerWidth / 320;
+    scaleH = window.innerHeight / 480;
+    var resizes = document.querySelectorAll('.resize');
+    for (var j = 0; j < resizes.length; j++) {
+        resizes[j].style.width = parseInt(resizes[j].style.width) * scaleW + 'px';
+        resizes[j].style.height = parseInt(resizes[j].style.height) * scaleH + 'px';
+        resizes[j].style.top = parseInt(resizes[j].style.top) * scaleH + 'px';
+        resizes[j].style.left = parseInt(resizes[j].style.left) * scaleW + 'px';
+    }
+
+    var mySwiper = new Swiper('.swiper-container', {
+        direction: 'vertical',
+        pagination: '.swiper-pagination',
+        //virtualTranslate : true,
+        mousewheelControl: true,
+        onInit: function (swiper) {
+            swiperAnimateCache(swiper);
+            swiperAnimate(swiper);
+        },
+        onSlideChangeEnd: function (swiper) {
+            swiperAnimate(swiper);
+        },
+        onTransitionEnd: function (swiper) {
+            swiperAnimate(swiper);
+        },
+
+
+        watchSlidesProgress: true,
+
+        onProgress: function (swiper) {
+            for (var i = 0; i < swiper.slides.length; i++) {
+                var slide = swiper.slides[i];
+                var progress = slide.progress;
+                var translate = progress * swiper.height / 4;
+                scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
+                var opacity = 1 - Math.min(Math.abs(progress / 2), 0.5);
+                slide.style.opacity = opacity;
+                es = slide.style;
+                es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,' + translate + 'px,-' + translate + 'px) scaleY(' + scale + ')';
+
+            }
+        },
+
+        onSetTransition: function (swiper, speed) {
+            for (var i = 0; i < swiper.slides.length; i++) {
+                es = swiper.slides[i].style;
+                es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
+
+            }
+        },
+
+
+    })
+</script>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function ($) {
+        ontouchstart = "return false;"
+    });
+    var id = 1;
+    var url = "index.php";
+    var score = 0;
+    var value = 0;
+
+    function aaa() {
+        if (id > 10) {
+            window.location = "finish.php?score=" + score;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "index.php",
+                async: true,
+                data: "id=" + id,
+                success: function (msg) {
+                    $(".swiper-slide2").empty().append(msg);
+                    test();
+                    $(".choose").delegate('span', 'click', function (event) {
+                        event.stopPropagation();
+                        var target = event.target;
+                        var type = target.tagName.toLowerCase();
+                        if (type == 'img') {
+                            $(target).parent().attr("background-color", "#ffaf00");
+                            value = $(target).parent().attr("data-value");
+
+                        } else if (type == 'span') {
+                            $(target).prev().attr("src", "upload/ischecked.png");
+                            // $(target).parent().css("background-color","#ffaf00");
+                            // alert( $(target).parent().attr("background-color"));
+                            value = $(target).parent().attr("data-value");
+                        } else {
+                            $(target).attr("background-color", "#ffaf00");
+                            value = $(target).attr("data-value");
+                        }
+
+                        score = parseInt(score) + parseInt(value);
+                        id = id + 1;
+
+                        setTimeout('aaa()', 50);
+                    });
+
+                    function test() {
+                        scaleW = window.innerWidth / 320;
+                        scaleH = window.innerHeight / 480;
+                        var resizes = document.querySelectorAll('.resize');
+                        for (var j = 0; j < resizes.length; j++) {
+                            resizes[j].style.width = parseInt(resizes[j].style.width) * scaleW + 'px';
+                            resizes[j].style.height = parseInt(resizes[j].style.height) * scaleH + 'px';
+                            resizes[j].style.top = parseInt(resizes[j].style.top) * scaleH + 'px';
+                            resizes[j].style.left = parseInt(resizes[j].style.left) * scaleW + 'px';
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    $(".choose").delegate('span', 'click', function (event) {
+        event.stopPropagation();
+        var target = event.target;
+        var type = target.tagName.toLowerCase();
+        if (type == 'img') {
+            $(target).parent().attr("background-color", "#ffaf00");
+            value = $(target).parent().attr("data-value");
+
+        } else if (type == 'span') {
+            $(target).prev().attr("src", "upload/ischecked.png");
+            // $(target).parent().css("background-color","#ffaf00");
+            // alert( $(target).parent().attr("background-color"));
+            value = $(target).parent().attr("data-value");
+        } else {
+            $(target).attr("background-color", "#ffaf00");
+            value = $(target).attr("data-value");
+        }
+
+        score = parseInt(score) + parseInt(value);
+        id = id + 1;
+
+        setTimeout('aaa()', 50);
+    });
+    //
+
+</script>
+</body>
+</html>
